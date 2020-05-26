@@ -1,0 +1,209 @@
+---
+title: "exam"
+author: "Kata Molnar"
+date: "14/05/2020"
+output:   
+  md_document:
+    variant: markdown_github
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(pacman)
+
+pacman::p_load(dplyr, tidyverse, brms, patchwork, RColorBrewer)
+
+data10 <- read.csv("data10.csv")
+data20 <- read.csv("data20.csv")
+data30 <- read.csv("data30.csv")
+data40 <- read.csv("data40.csv")
+data50 <- read.csv("data50.csv")
+data60 <- read.csv("data60.csv")
+data70 <- read.csv("data70.csv")
+data80 <- read.csv("data80.csv")
+
+```
+
+## DATA CLEANING
+```{r}
+# extracting, averaging and renaming the columns for the different environment values
+
+# 10
+d10 <- data10 %>% group_by(X.step.) %>% summarise(No_Dep = mean(count.turtles.with...severity....No.Depression...), Mild_Dep = mean(count.turtles.with...severity....Mild.Depression...), Moderate_Dep = mean(count.turtles.with...severity....Moderate.Depression...), Severe_Dep = mean(count.turtles.with...severity....Severe.Depression...), All_Dep = mean(count.turtles.with...severity.....No.Depression...), Mean_DScore = mean(mean...dep.score...of.turtles), Treatment = mean(count.turtles.with...treatment...), Talk = mean(count.turtles.with...talks...), Prob_of_Talking = mean(mean...prob.of.talking...of.turtles), Prob_of_Treatment = mean(mean...prob.of.treatment...of.turtles), Mean_DScore_Male = mean(mean...dep.score...of.turtles.with...gender.....male...), Mean_DScore_Female = mean(mean...dep.score...of.turtles.with...gender.....female...), NoDep_Male = mean(count.turtles.with...severity....No.Depression..and.gender.....male...), Mild_Male = mean(count.turtles.with...severity....Mild.Depression..and.gender.....male...), Moderate_Male = mean(count.turtles.with...severity....Moderate.Depression..and.gender.....male...), Severe_Male = mean(count.turtles.with...severity....Severe.Depression..and.gender.....male...), AllDep_Male = mean(count.turtles.with...severity.....No.Depression..and.gender.....male...), NoDep_Female = mean(count.turtles.with...severity....No.Depression..and.gender.....female...), Mild_Female = mean(count.turtles.with...severity....Mild.Depression..and.gender.....female...), Moderate_Female = mean(count.turtles.with...severity....Moderate.Depression..and.gender.....female...), Severe_Female = mean(count.turtles.with...severity....Severe.Depression..and.gender.....female...), AllDep_Female = mean(count.turtles.with...severity.....No.Depression..and.gender.....female...), Count_Male = mean(count.turtles.with...gender.....male...), Count_Female = mean(count.turtles.with...gender.....female...), Male_Treatment = mean(count.turtles.with...treatment....TRUE.and.gender.....male...), Male_Talks = mean(count.turtles.with...talks....TRUE.and.gender.....male...), Female_Treatment = mean(count.turtles.with...treatment....TRUE.and.gender.....female...), Female_Talks = mean(count.turtles.with...talks....TRUE.and.gender.....female...)
+)
+d10$Environment <- c(10)
+
+# 20
+d20 <- data20 %>% group_by(X.step.) %>% summarise(No_Dep = mean(count.turtles.with...severity....No.Depression...), Mild_Dep = mean(count.turtles.with...severity....Mild.Depression...), Moderate_Dep = mean(count.turtles.with...severity....Moderate.Depression...), Severe_Dep = mean(count.turtles.with...severity....Severe.Depression...), All_Dep = mean(count.turtles.with...severity.....No.Depression...), Mean_DScore = mean(mean...dep.score...of.turtles), Treatment = mean(count.turtles.with...treatment...), Talk = mean(count.turtles.with...talks...), Prob_of_Talking = mean(mean...prob.of.talking...of.turtles), Prob_of_Treatment = mean(mean...prob.of.treatment...of.turtles), Mean_DScore_Male = mean(mean...dep.score...of.turtles.with...gender.....male...), Mean_DScore_Female = mean(mean...dep.score...of.turtles.with...gender.....female...), NoDep_Male = mean(count.turtles.with...severity....No.Depression..and.gender.....male...), Mild_Male = mean(count.turtles.with...severity....Mild.Depression..and.gender.....male...), Moderate_Male = mean(count.turtles.with...severity....Moderate.Depression..and.gender.....male...), Severe_Male = mean(count.turtles.with...severity....Severe.Depression..and.gender.....male...), AllDep_Male = mean(count.turtles.with...severity.....No.Depression..and.gender.....male...), NoDep_Female = mean(count.turtles.with...severity....No.Depression..and.gender.....female...), Mild_Female = mean(count.turtles.with...severity....Mild.Depression..and.gender.....female...), Moderate_Female = mean(count.turtles.with...severity....Moderate.Depression..and.gender.....female...), Severe_Female = mean(count.turtles.with...severity....Severe.Depression..and.gender.....female...), AllDep_Female = mean(count.turtles.with...severity.....No.Depression..and.gender.....female...), Count_Male = mean(count.turtles.with...gender.....male...), Count_Female = mean(count.turtles.with...gender.....female...), Male_Treatment = mean(count.turtles.with...treatment....TRUE.and.gender.....male...), Male_Talks = mean(count.turtles.with...talks....TRUE.and.gender.....male...), Female_Treatment = mean(count.turtles.with...treatment....TRUE.and.gender.....female...), Female_Talks = mean(count.turtles.with...talks....TRUE.and.gender.....female...)
+)
+
+d20$Environment <- c(20)
+
+# 30
+d30 <- data30 %>% group_by(X.step.) %>% summarise(No_Dep = mean(count.turtles.with...severity....No.Depression...), Mild_Dep = mean(count.turtles.with...severity....Mild.Depression...), Moderate_Dep = mean(count.turtles.with...severity....Moderate.Depression...), Severe_Dep = mean(count.turtles.with...severity....Severe.Depression...), All_Dep = mean(count.turtles.with...severity.....No.Depression...), Mean_DScore = mean(mean...dep.score...of.turtles), Treatment = mean(count.turtles.with...treatment...), Talk = mean(count.turtles.with...talks...), Prob_of_Talking = mean(mean...prob.of.talking...of.turtles), Prob_of_Treatment = mean(mean...prob.of.treatment...of.turtles), Mean_DScore_Male = mean(mean...dep.score...of.turtles.with...gender.....male...), Mean_DScore_Female = mean(mean...dep.score...of.turtles.with...gender.....female...), NoDep_Male = mean(count.turtles.with...severity....No.Depression..and.gender.....male...), Mild_Male = mean(count.turtles.with...severity....Mild.Depression..and.gender.....male...), Moderate_Male = mean(count.turtles.with...severity....Moderate.Depression..and.gender.....male...), Severe_Male = mean(count.turtles.with...severity....Severe.Depression..and.gender.....male...), AllDep_Male = mean(count.turtles.with...severity.....No.Depression..and.gender.....male...), NoDep_Female = mean(count.turtles.with...severity....No.Depression..and.gender.....female...), Mild_Female = mean(count.turtles.with...severity....Mild.Depression..and.gender.....female...), Moderate_Female = mean(count.turtles.with...severity....Moderate.Depression..and.gender.....female...), Severe_Female = mean(count.turtles.with...severity....Severe.Depression..and.gender.....female...), AllDep_Female = mean(count.turtles.with...severity.....No.Depression..and.gender.....female...), Count_Male = mean(count.turtles.with...gender.....male...), Count_Female = mean(count.turtles.with...gender.....female...), Male_Treatment = mean(count.turtles.with...treatment....TRUE.and.gender.....male...), Male_Talks = mean(count.turtles.with...talks....TRUE.and.gender.....male...), Female_Treatment = mean(count.turtles.with...treatment....TRUE.and.gender.....female...), Female_Talks = mean(count.turtles.with...talks....TRUE.and.gender.....female...))
+
+d30$Environment <- c(30)
+
+# 40
+d40 <- data40 %>% group_by(X.step.) %>% summarise(No_Dep = mean(count.turtles.with...severity....No.Depression...), Mild_Dep = mean(count.turtles.with...severity....Mild.Depression...), Moderate_Dep = mean(count.turtles.with...severity....Moderate.Depression...), Severe_Dep = mean(count.turtles.with...severity....Severe.Depression...), All_Dep = mean(count.turtles.with...severity.....No.Depression...), Mean_DScore = mean(mean...dep.score...of.turtles), Treatment = mean(count.turtles.with...treatment...), Talk = mean(count.turtles.with...talks...), Prob_of_Talking = mean(mean...prob.of.talking...of.turtles), Prob_of_Treatment = mean(mean...prob.of.treatment...of.turtles), Mean_DScore_Male = mean(mean...dep.score...of.turtles.with...gender.....male...), Mean_DScore_Female = mean(mean...dep.score...of.turtles.with...gender.....female...), NoDep_Male = mean(count.turtles.with...severity....No.Depression..and.gender.....male...), Mild_Male = mean(count.turtles.with...severity....Mild.Depression..and.gender.....male...), Moderate_Male = mean(count.turtles.with...severity....Moderate.Depression..and.gender.....male...), Severe_Male = mean(count.turtles.with...severity....Severe.Depression..and.gender.....male...), AllDep_Male = mean(count.turtles.with...severity.....No.Depression..and.gender.....male...), NoDep_Female = mean(count.turtles.with...severity....No.Depression..and.gender.....female...), Mild_Female = mean(count.turtles.with...severity....Mild.Depression..and.gender.....female...), Moderate_Female = mean(count.turtles.with...severity....Moderate.Depression..and.gender.....female...), Severe_Female = mean(count.turtles.with...severity....Severe.Depression..and.gender.....female...), AllDep_Female = mean(count.turtles.with...severity.....No.Depression..and.gender.....female...), Count_Male = mean(count.turtles.with...gender.....male...), Count_Female = mean(count.turtles.with...gender.....female...), Male_Treatment = mean(count.turtles.with...treatment....TRUE.and.gender.....male...), Male_Talks = mean(count.turtles.with...talks....TRUE.and.gender.....male...), Female_Treatment = mean(count.turtles.with...treatment....TRUE.and.gender.....female...), Female_Talks = mean(count.turtles.with...talks....TRUE.and.gender.....female...)
+)
+
+d40$Environment <- c(40)
+
+# 50
+d50 <- data50 %>% group_by(X.step.) %>% summarise(No_Dep = mean(count.turtles.with...severity....No.Depression...), Mild_Dep = mean(count.turtles.with...severity....Mild.Depression...), Moderate_Dep = mean(count.turtles.with...severity....Moderate.Depression...), Severe_Dep = mean(count.turtles.with...severity....Severe.Depression...), All_Dep = mean(count.turtles.with...severity.....No.Depression...), Mean_DScore = mean(mean...dep.score...of.turtles), Treatment = mean(count.turtles.with...treatment...), Talk = mean(count.turtles.with...talks...), Prob_of_Talking = mean(mean...prob.of.talking...of.turtles), Prob_of_Treatment = mean(mean...prob.of.treatment...of.turtles), Mean_DScore_Male = mean(mean...dep.score...of.turtles.with...gender.....male...), Mean_DScore_Female = mean(mean...dep.score...of.turtles.with...gender.....female...), NoDep_Male = mean(count.turtles.with...severity....No.Depression..and.gender.....male...), Mild_Male = mean(count.turtles.with...severity....Mild.Depression..and.gender.....male...), Moderate_Male = mean(count.turtles.with...severity....Moderate.Depression..and.gender.....male...), Severe_Male = mean(count.turtles.with...severity....Severe.Depression..and.gender.....male...), AllDep_Male = mean(count.turtles.with...severity.....No.Depression..and.gender.....male...), NoDep_Female = mean(count.turtles.with...severity....No.Depression..and.gender.....female...), Mild_Female = mean(count.turtles.with...severity....Mild.Depression..and.gender.....female...), Moderate_Female = mean(count.turtles.with...severity....Moderate.Depression..and.gender.....female...), Severe_Female = mean(count.turtles.with...severity....Severe.Depression..and.gender.....female...), AllDep_Female = mean(count.turtles.with...severity.....No.Depression..and.gender.....female...), Count_Male = mean(count.turtles.with...gender.....male...), Count_Female = mean(count.turtles.with...gender.....female...), Male_Treatment = mean(count.turtles.with...treatment....TRUE.and.gender.....male...), Male_Talks = mean(count.turtles.with...talks....TRUE.and.gender.....male...), Female_Treatment = mean(count.turtles.with...treatment....TRUE.and.gender.....female...), Female_Talks = mean(count.turtles.with...talks....TRUE.and.gender.....female...)
+)
+
+d50$Environment <- c(50)
+
+# 60
+d60 <- data60 %>% group_by(X.step.) %>% summarise(No_Dep = mean(count.turtles.with...severity....No.Depression...), Mild_Dep = mean(count.turtles.with...severity....Mild.Depression...), Moderate_Dep = mean(count.turtles.with...severity....Moderate.Depression...), Severe_Dep = mean(count.turtles.with...severity....Severe.Depression...), All_Dep = mean(count.turtles.with...severity.....No.Depression...), Mean_DScore = mean(mean...dep.score...of.turtles), Treatment = mean(count.turtles.with...treatment...), Talk = mean(count.turtles.with...talks...), Prob_of_Talking = mean(mean...prob.of.talking...of.turtles), Prob_of_Treatment = mean(mean...prob.of.treatment...of.turtles), Mean_DScore_Male = mean(mean...dep.score...of.turtles.with...gender.....male...), Mean_DScore_Female = mean(mean...dep.score...of.turtles.with...gender.....female...), NoDep_Male = mean(count.turtles.with...severity....No.Depression..and.gender.....male...), Mild_Male = mean(count.turtles.with...severity....Mild.Depression..and.gender.....male...), Moderate_Male = mean(count.turtles.with...severity....Moderate.Depression..and.gender.....male...), Severe_Male = mean(count.turtles.with...severity....Severe.Depression..and.gender.....male...), AllDep_Male = mean(count.turtles.with...severity.....No.Depression..and.gender.....male...), NoDep_Female = mean(count.turtles.with...severity....No.Depression..and.gender.....female...), Mild_Female = mean(count.turtles.with...severity....Mild.Depression..and.gender.....female...), Moderate_Female = mean(count.turtles.with...severity....Moderate.Depression..and.gender.....female...), Severe_Female = mean(count.turtles.with...severity....Severe.Depression..and.gender.....female...), AllDep_Female = mean(count.turtles.with...severity.....No.Depression..and.gender.....female...), Count_Male = mean(count.turtles.with...gender.....male...), Count_Female = mean(count.turtles.with...gender.....female...), Male_Treatment = mean(count.turtles.with...treatment....TRUE.and.gender.....male...), Male_Talks = mean(count.turtles.with...talks....TRUE.and.gender.....male...), Female_Treatment = mean(count.turtles.with...treatment....TRUE.and.gender.....female...), Female_Talks = mean(count.turtles.with...talks....TRUE.and.gender.....female...)
+)
+
+d60$Environment <- c(60)
+
+# 70
+d70 <- data70 %>% group_by(X.step.) %>% summarise(No_Dep = mean(count.turtles.with...severity....No.Depression...), Mild_Dep = mean(count.turtles.with...severity....Mild.Depression...), Moderate_Dep = mean(count.turtles.with...severity....Moderate.Depression...), Severe_Dep = mean(count.turtles.with...severity....Severe.Depression...), All_Dep = mean(count.turtles.with...severity.....No.Depression...), Mean_DScore = mean(mean...dep.score...of.turtles), Treatment = mean(count.turtles.with...treatment...), Talk = mean(count.turtles.with...talks...), Prob_of_Talking = mean(mean...prob.of.talking...of.turtles), Prob_of_Treatment = mean(mean...prob.of.treatment...of.turtles), Mean_DScore_Male = mean(mean...dep.score...of.turtles.with...gender.....male...), Mean_DScore_Female = mean(mean...dep.score...of.turtles.with...gender.....female...), NoDep_Male = mean(count.turtles.with...severity....No.Depression..and.gender.....male...), Mild_Male = mean(count.turtles.with...severity....Mild.Depression..and.gender.....male...), Moderate_Male = mean(count.turtles.with...severity....Moderate.Depression..and.gender.....male...), Severe_Male = mean(count.turtles.with...severity....Severe.Depression..and.gender.....male...), AllDep_Male = mean(count.turtles.with...severity.....No.Depression..and.gender.....male...), NoDep_Female = mean(count.turtles.with...severity....No.Depression..and.gender.....female...), Mild_Female = mean(count.turtles.with...severity....Mild.Depression..and.gender.....female...), Moderate_Female = mean(count.turtles.with...severity....Moderate.Depression..and.gender.....female...), Severe_Female = mean(count.turtles.with...severity....Severe.Depression..and.gender.....female...), AllDep_Female = mean(count.turtles.with...severity.....No.Depression..and.gender.....female...), Count_Male = mean(count.turtles.with...gender.....male...), Count_Female = mean(count.turtles.with...gender.....female...), Male_Treatment = mean(count.turtles.with...treatment....TRUE.and.gender.....male...), Male_Talks = mean(count.turtles.with...talks....TRUE.and.gender.....male...), Female_Treatment = mean(count.turtles.with...treatment....TRUE.and.gender.....female...), Female_Talks = mean(count.turtles.with...talks....TRUE.and.gender.....female...)
+)
+
+d70$Environment <- c(70)
+
+# 80
+d80 <- data80 %>% group_by(X.step.) %>% summarise(No_Dep = mean(count.turtles.with...severity....No.Depression...), Mild_Dep = mean(count.turtles.with...severity....Mild.Depression...), Moderate_Dep = mean(count.turtles.with...severity....Moderate.Depression...), Severe_Dep = mean(count.turtles.with...severity....Severe.Depression...), All_Dep = mean(count.turtles.with...severity.....No.Depression...), Mean_DScore = mean(mean...dep.score...of.turtles), Treatment = mean(count.turtles.with...treatment...), Talk = mean(count.turtles.with...talks...), Prob_of_Talking = mean(mean...prob.of.talking...of.turtles), Prob_of_Treatment = mean(mean...prob.of.treatment...of.turtles), Mean_DScore_Male = mean(mean...dep.score...of.turtles.with...gender.....male...), Mean_DScore_Female = mean(mean...dep.score...of.turtles.with...gender.....female...), NoDep_Male = mean(count.turtles.with...severity....No.Depression..and.gender.....male...), Mild_Male = mean(count.turtles.with...severity....Mild.Depression..and.gender.....male...), Moderate_Male = mean(count.turtles.with...severity....Moderate.Depression..and.gender.....male...), Severe_Male = mean(count.turtles.with...severity....Severe.Depression..and.gender.....male...), AllDep_Male = mean(count.turtles.with...severity.....No.Depression..and.gender.....male...), NoDep_Female = mean(count.turtles.with...severity....No.Depression..and.gender.....female...), Mild_Female = mean(count.turtles.with...severity....Mild.Depression..and.gender.....female...), Moderate_Female = mean(count.turtles.with...severity....Moderate.Depression..and.gender.....female...), Severe_Female = mean(count.turtles.with...severity....Severe.Depression..and.gender.....female...), AllDep_Female = mean(count.turtles.with...severity.....No.Depression..and.gender.....female...), Count_Male = mean(count.turtles.with...gender.....male...), Count_Female = mean(count.turtles.with...gender.....female...), Male_Treatment = mean(count.turtles.with...treatment....TRUE.and.gender.....male...), Male_Talks = mean(count.turtles.with...talks....TRUE.and.gender.....male...), Female_Treatment = mean(count.turtles.with...treatment....TRUE.and.gender.....female...), Female_Talks = mean(count.turtles.with...talks....TRUE.and.gender.....female...)
+)
+
+d80$Environment <- c(80)
+
+# merge the datasets
+merged1 <- rbind(d10, d20)
+merged2 <- rbind(merged1, d30)
+merged3 <- rbind(merged2, d40)
+merged4 <- rbind(merged3, d50)
+merged5 <- rbind(merged4, d60)
+merged6 <- rbind(merged5, d70)
+merged_all <- rbind(merged6, d80)
+
+colnames(merged_all)[1] <- "Week"
+
+# save file
+write.csv(merged_all, file = "super_data.csv")
+
+data <- read.table("super_data.csv", sep = ",", header = T)
+
+```
+
+## DESCRIPTIVE STATS
+```{r}
+data <- read.table("super_data.csv", sep = ",", header = T)
+
+# Creating fancy table of descriptive stats
+
+library(table1)
+
+table1::label(data$Talk) <- "Talk"
+table1::label(data$Male_Talks) <- "Talk Male"
+table1::label(data$Female_Talks) <- "Talk Female"
+table1::label(data$Treatment) <- "Treatment"
+table1::label(data$Male_Treatment) <- "Treatment Male"
+table1::label(data$Female_Treatment) <- "Treatment Female"
+table1::label(data$No_Dep) <- "No Depression" 
+table1::label(data$Mild_Dep) <- "Mild Depression"
+table1::label(data$Moderate_Dep) <- "Moderate Depression"
+table1::label(data$Severe_Dep) <- "Severe Depression"
+table1::label(data$All_Dep) <- "All Depressed"
+table1::label(data$NoDep_Male) <- "No Depression Male" 
+table1::label(data$AllDep_Male) <- "All Depressed Male"
+table1::label(data$NoDep_Female) <- "No Depression Female" 
+table1::label(data$AllDep_Female) <- "All Depressed Female"
+
+table1::table1(~ No_Dep + Mild_Dep + Moderate_Dep + Severe_Dep + All_Dep + NoDep_Male + NoDep_Female + AllDep_Male + AllDep_Female + Treatment + Male_Treatment + Female_Treatment + Talk + Male_Talks + Female_Talks | Environment, data = data)
+
+# table1::label(data$Prob_of_Talking) <- "Prob of Talking"
+# table1::label(data$Prob_of_Treatment) <- "Prob of Treatment"
+
+```
+
+## PRETTY PLOTS
+```{r}
+w1 <- filter(data, Week == 1 | Week == 104)
+
+### talking
+talking <- ggplot(w1, aes(Week, Talk, color=Environment)) + geom_point (aes(group = Environment)) + geom_line(aes(group = Environment)) + labs(x = "Week" , y = "Agents with treatment", title = "Number of agents seeking treatment on W1 and W104")
+talking + scale_color_gradientn(colours = rainbow(5))
+
+### treatment seeking
+treatment <- ggplot(w1, aes(Week, Treatment, color=Environment)) + geom_point (aes(group = Environment)) + geom_line(aes(group = Environment)) + labs(x = "Week" , y = "Agents with treatment", title = "Number of agents seeking treatment on W1 and W104")
+treatment + scale_color_gradientn(colours = rainbow(5))
+
+### all depressed
+dep <-ggplot(w1, aes(Week, All_Dep)) + geom_point (aes(group = Environment, color= Environment))+ geom_line(aes(group = Environment, color=Environment)) + labs(x = "Week" , y = "Agents with depression", title = "All agents")
+dep + scale_color_gradientn(colours = rainbow(5))
+
+### depression categories
+a <- ggplot(w1, aes(Week, No_Dep, color = Environment)) + geom_point (aes(group = Environment)) + geom_line(aes(group = Environment)) + labs(x = "Week" , y = "Agents with no depression", title = "No depression")
+
+b <- ggplot(w1, aes(Week, Mild_Dep, color = Environment)) + geom_point (aes(group = Environment)) + geom_line(aes(group = Environment)) + labs(x = "Week" , y = "Agents with mild depression", title = "Mild depression")
+
+c <- ggplot(w1, aes(Week, Moderate_Dep, color = Environment)) + geom_point (aes(group = Environment)) + geom_line(aes(group = Environment)) + labs(x = "Week" , y = "Agents with moderate depression", title = "Moderate depression")
+
+d <- ggplot(w1, aes(Week, Severe_Dep, color = Environment)) + geom_point (aes(group = Environment)) + geom_line(aes(group = Environment)) + labs(x = "Week" , y = "Agents with severe depression", title = "Severe depression")
+
+a + scale_color_gradientn(colours = rainbow(5)) + b + scale_color_gradientn(colours = rainbow(5)) + c + scale_color_gradientn(colours = rainbow(5)) + d + scale_color_gradientn(colours = rainbow(5))
+
+### gender all dep
+male_all <- ggplot(w1, aes(Week, AllDep_Male, color=Environment)) + geom_point (aes(group = Environment)) + geom_line(aes(group = Environment)) + labs(x = "Week" , y = "Male All Dep", title = "Males")
+male_all + scale_color_gradientn(colours = rainbow(5))
+
+female_all <- ggplot(w1, aes(Week, AllDep_Female, color=Environment)) + geom_point (aes(group = Environment)) + geom_line(aes(group = Environment)) + labs(x = "Week" , y = "Female All Dep", title = "Females")
+female_all + scale_color_gradientn(colours = rainbow(5))
+
+male_all + scale_color_gradientn(colours = rainbow(5)) + female_all + scale_color_gradientn(colours = rainbow(5))
+
+### gender no dep
+male_no <- ggplot(w1, aes(Week, NoDep_Male, color=Environment)) + geom_point (aes(group = Environment)) + geom_line(aes(group = Environment)) + labs(x = "Week" , y = "Male No Dep", title = "Males")
+male_no + scale_color_gradientn(colours = rainbow(5))
+
+female_no <- ggplot(w1, aes(Week, NoDep_Female, color=Environment)) + geom_point (aes(group = Environment)) + geom_line(aes(group = Environment)) + labs(x = "Week" , y = "Female No Dep", title = "Females")
+female_no + scale_color_gradientn(colours = rainbow(5))
+
+male_no + scale_color_gradientn(colours = rainbow(5)) + female_no + scale_color_gradientn(colours = rainbow(5))
+
+### gender mild
+male_mild <- ggplot(w1, aes(Week, Mild_Male, color=Environment)) + geom_point (aes(group = Environment)) + geom_line(aes(group = Environment)) + labs(x = "Week" , y = "Male Mild", title = "Males")
+male_mild + scale_color_gradientn(colours = rainbow(5))
+
+female_mild <- ggplot(w1, aes(Week, Mild_Female, color=Environment)) + geom_point (aes(group = Environment)) + geom_line(aes(group = Environment)) + labs(x = "Week" , y = "Female Mild", title = "Females")
+female_mild + scale_color_gradientn(colours = rainbow(5))
+
+### gender moderate
+male_mod <- ggplot(w1, aes(Week, Moderate_Male, color=Environment)) + geom_point (aes(group = Environment)) + geom_line(aes(group = Environment)) + labs(x = "Week" , y = "Male Moderate", title = "Males")
+male_mod + scale_color_gradientn(colours = rainbow(5))
+
+female_mod <- ggplot(w1, aes(Week, Moderate_Female, color=Environment)) + geom_point (aes(group = Environment)) + geom_line(aes(group = Environment)) + labs(x = "Week" , y = "Female Moderate", title = "Females")
+female_mod + scale_color_gradientn(colours = rainbow(5))
+
+### gender severe
+male_sev <- ggplot(w1, aes(Week, Severe_Male, color=Environment)) + geom_point (aes(group = Environment)) + geom_line(aes(group = Environment)) + labs(x = "Week" , y = "Male Severe", title = "Males")
+male_sev + scale_color_gradientn(colours = rainbow(5))
+
+female_sev <- ggplot(w1, aes(Week, Severe_Female, color=Environment)) + geom_point (aes(group = Environment)) + geom_line(aes(group = Environment)) + labs(x = "Week" , y = "Female Severe", title = "Females")
+female_sev + scale_color_gradientn(colours = rainbow(5))
+
+male_no + scale_color_gradientn(colours = rainbow(5))+ male_mild + scale_color_gradientn(colours = rainbow(5))+ male_mod + scale_color_gradientn(colours = rainbow(5))+ male_sev + scale_color_gradientn(colours = rainbow(5))+ male_all+ scale_color_gradientn(colours = rainbow(5))
+
+female_no + scale_color_gradientn(colours = rainbow(5))+ female_mild + scale_color_gradientn(colours = rainbow(5))+ female_mod + scale_color_gradientn(colours = rainbow(5))+ female_sev + scale_color_gradientn(colours = rainbow(5))+ female_all+ scale_color_gradientn(colours = rainbow(5))
+
+### gender treatment
+male_treat <- ggplot(w1, aes(Week, Male_Treatment, color=Environment)) + geom_point (aes(group = Environment)) + geom_line(aes(group = Environment)) + labs(x = "Week" , y = "Males seeking treatment", title = "Males")
+male_treat + scale_color_gradientn(colours = rainbow(5))
+
+female_treat <- ggplot(w1, aes(Week, Female_Treatment, color=Environment)) + geom_point (aes(group = Environment)) + geom_line(aes(group = Environment)) + labs(x = "Week" , y = "Females seeking treatment", title = "Females")
+female_treat + scale_color_gradientn(colours = rainbow(5))
+
+male_treat + scale_color_gradientn(colours = rainbow(5)) + female_treat + scale_color_gradientn(colours = rainbow(5))
+
+```
+
